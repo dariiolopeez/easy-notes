@@ -3,6 +3,7 @@ package root
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/dariiolopeez/easy-notes/internal/editor"
@@ -12,7 +13,7 @@ import (
 
 var editCmd = &cobra.Command{
 	Use:   "edit <id>",
-	Short: "Abre una nota existente en el editor",
+	Short: "Open an existing note in the configured editor",
 	Args:  cobra.ExactArgs(1),
 	RunE:  runEdit,
 }
@@ -27,21 +28,37 @@ func runEdit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	editorCmd := cfg.ResolveEditor()
-	if err := editor.Open(editorCmd, n.FilePath); err != nil {
-		return fmt.Errorf("error abriendo editor: %w", err)
+	originalTitle := n.Title
+	originalPath := n.FilePath
+
+	if err := editor.Open(cfg.ResolveEditor(), originalPath); err != nil {
+		return fmt.Errorf("editor error: %w", err)
 	}
 
-	data, err := os.ReadFile(n.FilePath)
+	data, err := os.ReadFile(originalPath)
 	if err != nil {
 		return err
 	}
 
-	updated, err := note.Parse(data, n.Category, n.FilePath)
+	updated, err := note.Parse(data, n.Category, originalPath)
 	if err != nil || updated == nil {
 		return err
 	}
 
 	updated.UpdatedAt = time.Now()
+
+	if updated.Title != originalTitle {
+		shortID := updated.ID
+		if len(shortID) > 8 {
+			shortID = shortID[:8]
+		}
+		newFilename := fmt.Sprintf("%s_%s.md", shortID, note.Slug(updated.Title))
+		newPath := filepath.Join(cfg.BaseDir, updated.Category, newFilename)
+		if err := os.Rename(originalPath, newPath); err != nil {
+			return fmt.Errorf("failed to rename note file: %w", err)
+		}
+		updated.FilePath = newPath
+	}
+
 	return store.Save(updated)
 }
