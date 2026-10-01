@@ -14,9 +14,9 @@ var store *storage.Storage
 
 var rootCmd = &cobra.Command{
 	Use:   "easy-notes",
-	Short: "Gestor de notas local basado en archivos Markdown",
-	Long: `easy-notes es un gestor de notas local basado en archivos Markdown
-plano y convenciones Unix. Cada nota es un archivo .md con YAML Frontmatter.`,
+	Short: "Local note manager based on plain Markdown files",
+	Long: `easy-notes is a local note manager based on plain Markdown files
+and Unix conventions. Each note is a .md file with YAML Frontmatter.`,
 }
 
 func Execute() {
@@ -34,13 +34,13 @@ func initDeps() {
 	var err error
 	cfg, err = config.Load()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error cargando configuración: %v\n", err)
+		fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
 		os.Exit(1)
 	}
 
 	store, err = storage.New(cfg.BaseDir)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error inicializando almacenamiento: %v\n", err)
+		fmt.Fprintf(os.Stderr, "failed to initialize storage: %v\n", err)
 		os.Exit(1)
 	}
 }

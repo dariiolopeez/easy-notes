@@ -15,7 +15,7 @@ import (
 
 var newCmd = &cobra.Command{
 	Use:   "new <title>",
-	Short: "Crea una nueva nota y la abre en el editor",
+	Short: "Create a new note and open it in the editor",
 	Args:  cobra.ExactArgs(1),
 	RunE:  runNew,
 }
@@ -27,8 +27,8 @@ var (
 
 func init() {
 	rootCmd.AddCommand(newCmd)
-	newCmd.Flags().StringVarP(&newCategory, "category", "c", "inbox", "Categoría destino")
-	newCmd.Flags().StringVarP(&newTags, "tags", "t", "", "Tags separados por coma")
+	newCmd.Flags().StringVarP(&newCategory, "category", "c", "inbox", "Destination category")
+	newCmd.Flags().StringVarP(&newTags, "tags", "t", "", "Comma-separated tags")
 }
 
 func runNew(cmd *cobra.Command, args []string) error {
@@ -61,12 +61,12 @@ func runNew(cmd *cobra.Command, args []string) error {
 	}
 
 	if err := store.Save(n); err != nil {
-		return fmt.Errorf("error guardando nota: %w", err)
+		return fmt.Errorf("failed to save note: %w", err)
 	}
 
 	editorCmd := cfg.ResolveEditor()
 	if err := editor.Open(editorCmd, n.FilePath); err != nil {
-		return fmt.Errorf("error abriendo editor: %w", err)
+		return fmt.Errorf("failed to open editor: %w", err)
 	}
 
 	data, err := os.ReadFile(n.FilePath)
@@ -82,6 +82,6 @@ func runNew(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("nota guardada: %s\n", n.FilePath)
+	fmt.Printf("note saved: %s\n", n.FilePath)
 	return nil
 }

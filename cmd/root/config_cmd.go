@@ -8,7 +8,7 @@ import (
 
 var configCmd = &cobra.Command{
 	Use:   "config",
-	Short: "Muestra la configuración activa",
+	Short: "Show the active configuration",
 	RunE:  runConfig,
 }
 

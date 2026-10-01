@@ -11,7 +11,7 @@ import (
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Lista las notas disponibles",
+	Short: "List available notes",
 	RunE:  runList,
 }
 
@@ -22,8 +22,8 @@ var (
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-	listCmd.Flags().StringVarP(&listCategory, "category", "c", "", "Filtrar por categoría")
-	listCmd.Flags().StringVarP(&listTag, "tag", "t", "", "Filtrar por tag")
+	listCmd.Flags().StringVarP(&listCategory, "category", "c", "", "Filter by category")
+	listCmd.Flags().StringVarP(&listTag, "tag", "t", "", "Filter by tag")
 }
 
 func runList(cmd *cobra.Command, args []string) error {
@@ -33,13 +33,13 @@ func runList(cmd *cobra.Command, args []string) error {
 	}
 
 	if len(notes) == 0 {
-		fmt.Println("No hay notas.")
+		fmt.Println("No notes found.")
 		return nil
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
-	fmt.Fprintln(w, "ID\tTÍTULO\tCATEGORÍA\tTAGS\tACTUALIZADO")
-	fmt.Fprintln(w, "──\t──────\t─────────\t────\t───────────")
+	fmt.Fprintln(w, "ID\tTITLE\tCATEGORY\tTAGS\tUPDATED")
+	fmt.Fprintln(w, "──\t─────\t────────\t────\t───────")
 	for _, n := range notes {
 		shortID := n.ID
 		if len(shortID) > 8 {

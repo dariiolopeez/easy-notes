@@ -76,7 +76,7 @@ func (s *Storage) FindByID(id string) (*note.Note, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("nota no encontrada: %s", id)
+	return nil, fmt.Errorf("note not found: %s", id)
 }
 
 func (s *Storage) Save(n *note.Note) error {

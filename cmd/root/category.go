@@ -8,12 +8,12 @@ import (
 
 var categoryCmd = &cobra.Command{
 	Use:   "category",
-	Short: "Gestiona categorías de notas",
+	Short: "Manage note categories",
 }
 
 var categoryAddCmd = &cobra.Command{
 	Use:   "add <name>",
-	Short: "Crea una nueva categoría",
+	Short: "Create a new category",
 	Args:  cobra.ExactArgs(1),
 	RunE:  runCategoryAdd,
 }
@@ -26,8 +26,8 @@ func init() {
 func runCategoryAdd(cmd *cobra.Command, args []string) error {
 	name := args[0]
 	if err := store.EnsureCategory(name); err != nil {
-		return fmt.Errorf("error creando categoría '%s': %w", name, err)
+		return fmt.Errorf("failed to create category '%s': %w", name, err)
 	}
-	fmt.Printf("categoría '%s' creada en %s\n", name, cfg.BaseDir)
+	fmt.Printf("category '%s' created at %s\n", name, cfg.BaseDir)
 	return nil
 }
