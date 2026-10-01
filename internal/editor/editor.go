@@ -3,13 +3,10 @@ package editor
 import (
 	"os"
 	"os/exec"
-	"strings"
 )
 
 func Open(editorCmd, filePath string) error {
-	parts := strings.Fields(editorCmd)
-	args := append(parts[1:], filePath)
-	cmd := exec.Command(parts[0], args...)
+	cmd := exec.Command("sh", "-c", editorCmd+` "$0"`, filePath)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
