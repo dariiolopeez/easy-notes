@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/dariiolopeez/easy-notes/internal/editor"
 	"github.com/dariiolopeez/easy-notes/internal/note"
@@ -45,7 +44,7 @@ func runEdit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	updated.UpdatedAt = time.Now().UTC().Truncate(time.Second)
+	updated.UpdatedAt = note.Now()
 
 	if updated.Title != originalTitle {
 		shortID := updated.ID

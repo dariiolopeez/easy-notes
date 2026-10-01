@@ -9,12 +9,41 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const timeFormat = "2006-01-02 15:04"
+
+type Timestamp time.Time
+
+func Now() Timestamp {
+	return Timestamp(time.Now().Truncate(time.Minute))
+}
+
+func (t Timestamp) Format(layout string) string {
+	return time.Time(t).Format(layout)
+}
+
+func (t Timestamp) Equal(other Timestamp) bool {
+	return time.Time(t).Equal(time.Time(other))
+}
+
+func (t Timestamp) MarshalYAML() (interface{}, error) {
+	return time.Time(t).Format(timeFormat), nil
+}
+
+func (t *Timestamp) UnmarshalYAML(value *yaml.Node) error {
+	parsed, err := time.Parse(timeFormat, value.Value)
+	if err != nil {
+		return err
+	}
+	*t = Timestamp(parsed)
+	return nil
+}
+
 type Frontmatter struct {
 	ID        string    `yaml:"id"`
 	Title     string    `yaml:"title"`
 	Tags      []string  `yaml:"tags"`
-	CreatedAt time.Time `yaml:"created_at"`
-	UpdatedAt time.Time `yaml:"updated_at"`
+	CreatedAt Timestamp `yaml:"created_at"`
+	UpdatedAt Timestamp `yaml:"updated_at"`
 }
 
 type Note struct {

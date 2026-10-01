@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/dariiolopeez/easy-notes/internal/editor"
 	"github.com/dariiolopeez/easy-notes/internal/note"
@@ -46,7 +45,7 @@ func runNew(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	now := time.Now().UTC().Truncate(time.Second)
+	now := note.Now()
 	n := &note.Note{
 		Frontmatter: note.Frontmatter{
 			ID:        id,
@@ -77,7 +76,7 @@ func runNew(cmd *cobra.Command, args []string) error {
 	if err != nil || updated == nil {
 		return nil
 	}
-	updated.UpdatedAt = time.Now()
+	updated.UpdatedAt = note.Now()
 	if err := store.Save(updated); err != nil {
 		return err
 	}

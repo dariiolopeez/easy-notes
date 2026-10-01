@@ -66,7 +66,7 @@ func TestSlugConsecutiveSpecialChars(t *testing.T) {
 }
 
 func TestMarshalParseRoundTrip(t *testing.T) {
-	now := time.Date(2026, 10, 1, 20, 0, 0, 0, time.UTC)
+	now := note.Timestamp(time.Date(2026, 10, 1, 20, 0, 0, 0, time.UTC))
 
 	original := &note.Note{
 		Frontmatter: note.Frontmatter{
