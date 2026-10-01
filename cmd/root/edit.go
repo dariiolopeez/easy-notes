@@ -45,7 +45,7 @@ func runEdit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	updated.UpdatedAt = time.Now()
+	updated.UpdatedAt = time.Now().UTC().Truncate(time.Second)
 
 	if updated.Title != originalTitle {
 		shortID := updated.ID

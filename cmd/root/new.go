@@ -46,7 +46,7 @@ func runNew(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	now := time.Now()
+	now := time.Now().UTC().Truncate(time.Second)
 	n := &note.Note{
 		Frontmatter: note.Frontmatter{
 			ID:        id,
