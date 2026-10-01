@@ -77,7 +77,7 @@ rm "$(which easy-notes)"            # remove the binary
 
 ```sh
 # 1. Create your first note (opens in your editor)
-easy-notes new "My first note"
+easy-notes new inbox "My first note"
 
 # 2. List all notes
 easy-notes list
@@ -99,7 +99,7 @@ easy-notes config
 ### Create a new note
 
 ```sh
-easy-notes new "Go Cobra tips" --category dev --tags go,cli,cobra
+easy-notes new dev "Go Cobra tips" --tags go,cli,cobra
 ```
 
 This creates a file at `~/.local/share/easy-notes/dev/7f3a1b2c_go-cobra-tips.md` and opens it in your editor immediately. The editor is detected automatically (see [Edit a note](#edit-a-note)).
@@ -125,17 +125,16 @@ Write your note body here in Markdown.
 
 The file name is derived from the first 8 characters of the UUID and a slug of the title: `<id8>_<slug>.md`. If you rename the `title` field from the editor, `easy-notes edit` detects the change and renames the file automatically.
 
-If no category is specified, the note goes to `inbox/`.
+The first argument specifies the category, followed by the note title:
 
 ```sh
-easy-notes new "Quick thought"          # → inbox/
-easy-notes new "Sprint retro" -c work   # → work/
-easy-notes new "Docker tips" -c dev -t docker,containers
+easy-notes new inbox "Quick thought"
+easy-notes new work "Sprint retro"
+easy-notes new dev "Docker tips" -t docker,containers
 ```
 
 ```
 Flags:
-  -c, --category string   Destination category (default "inbox")
   -t, --tags string       Comma-separated tags
 ```
 
@@ -152,11 +151,11 @@ easy-notes list --tag go           # filter by tag
 Example output:
 
 ```
-ID        TITLE                   CATEGORY   TAGS            UPDATED
-──        ─────                   ────────   ────            ───────
-7f3a1b2c  Go Cobra tips           dev        go, cli, cobra  2026-10-01 20:00
-550e8400  What to buy this week   inbox      shopping        2026-10-01 18:00
-f0e1d2c3  Trip to Lisbon          personal                   2026-09-30 09:15
+ID        CATEGORY   TITLE                   TAGS            UPDATED
+──        ────────   ─────                   ────            ───────
+7f3a1b2c  dev        Go Cobra tips           go, cli, cobra  2026-10-01 20:00
+550e8400  inbox      What to buy this week   shopping        2026-10-01 18:00
+f0e1d2c3  personal   Trip to Lisbon                          2026-09-30 09:15
 ```
 
 ```
@@ -213,7 +212,7 @@ Categories are plain subdirectories under the notes home. Create one explicitly:
 easy-notes category add work
 ```
 
-Or use `--category` when creating a note — the directory is created automatically if it does not exist.
+Or pass it as the first argument when creating a note (`easy-notes new <category> <title>`) — the directory is created automatically if it does not exist.
 
 Notes directory layout:
 

@@ -38,8 +38,8 @@ func runList(cmd *cobra.Command, args []string) error {
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
-	fmt.Fprintln(w, "ID\tTITLE\tCATEGORY\tTAGS\tUPDATED")
-	fmt.Fprintln(w, "──\t─────\t────────\t────\t───────")
+	fmt.Fprintln(w, "ID\tCATEGORY\tTITLE\tTAGS\tUPDATED")
+	fmt.Fprintln(w, "──\t────────\t─────\t────\t───────")
 	for _, n := range notes {
 		shortID := n.ID
 		if len(shortID) > 8 {
@@ -48,8 +48,8 @@ func runList(cmd *cobra.Command, args []string) error {
 		tags := strings.Join(n.Tags, ", ")
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
 			shortID,
-			n.Title,
 			n.Category,
+			n.Title,
 			tags,
 			n.UpdatedAt.Format("2006-01-02 15:04"),
 		)

@@ -13,25 +13,24 @@ import (
 )
 
 var newCmd = &cobra.Command{
-	Use:   "new <title>",
-	Short: "Create a new note and open it in the editor",
-	Args:  cobra.ExactArgs(1),
+	Use:   "new <category> <title>",
+	Short: "Create a new note in a category and open it in the editor",
+	Args:  cobra.MinimumNArgs(2),
 	RunE:  runNew,
 }
 
 var (
-	newCategory string
-	newTags     string
+	newTags string
 )
 
 func init() {
 	rootCmd.AddCommand(newCmd)
-	newCmd.Flags().StringVarP(&newCategory, "category", "c", "inbox", "Destination category")
 	newCmd.Flags().StringVarP(&newTags, "tags", "t", "", "Comma-separated tags")
 }
 
 func runNew(cmd *cobra.Command, args []string) error {
-	title := args[0]
+	category := args[0]
+	title := strings.Join(args[1:], " ")
 	id := uuid.New().String()
 	slug := note.Slug(title)
 	filename := fmt.Sprintf("%s_%s.md", id[:8], slug)
@@ -54,9 +53,9 @@ func runNew(cmd *cobra.Command, args []string) error {
 			CreatedAt: now,
 			UpdatedAt: now,
 		},
-		Category: newCategory,
+		Category: category,
 		Body:     "",
-		FilePath: filepath.Join(cfg.BaseDir, newCategory, filename),
+		FilePath: filepath.Join(cfg.BaseDir, category, filename),
 	}
 
 	if err := store.Save(n); err != nil {
