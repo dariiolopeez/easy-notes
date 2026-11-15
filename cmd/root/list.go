@@ -10,9 +10,16 @@ import (
 )
 
 var listCmd = &cobra.Command{
-	Use:   "list",
+	Use:   "ls",
 	Short: "List available notes",
-	RunE:  runList,
+	Long: `List all notes stored in the notes directory, displaying their short ID,
+category, title, tags, and last updated timestamp. Results can be filtered
+by category or tag.`,
+	Example: `  easy-notes ls
+  easy-notes ls --category dev
+  easy-notes ls --tag go
+  easy-notes ls -c dev -t cli`,
+	RunE: runList,
 }
 
 var (

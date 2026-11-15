@@ -7,9 +7,12 @@ import (
 )
 
 var configCmd = &cobra.Command{
-	Use:   "config",
+	Use:   "cfg",
 	Short: "Show the active configuration",
-	RunE:  runConfig,
+	Long: `Display the active base_dir and the resolved editor from
+~/.config/easy-notes/config.yaml or environment fallbacks ($EDITOR, $VISUAL).`,
+	Example: `  easy-notes cfg`,
+	RunE:    runConfig,
 }
 
 func init() {

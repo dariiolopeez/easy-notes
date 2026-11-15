@@ -13,10 +13,16 @@ import (
 )
 
 var newCmd = &cobra.Command{
-	Use:   "new <category> <title>",
+	Use:   "n <category> <title>",
 	Short: "Create a new note in a category and open it in the editor",
-	Args:  cobra.MinimumNArgs(2),
-	RunE:  runNew,
+	Long: `Create a new Markdown note with YAML frontmatter inside the specified category
+directory and open it immediately in your configured editor. If the category
+does not exist, it is created automatically.`,
+	Example: `  easy-notes n inbox "Quick thought"
+  easy-notes n dev "Go Cobra tips" --tags go,cli,cobra
+  easy-notes n work "Sprint retro" -t team,agile`,
+	Args: cobra.MinimumNArgs(2),
+	RunE: runNew,
 }
 
 var (

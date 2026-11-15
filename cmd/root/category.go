@@ -7,15 +7,19 @@ import (
 )
 
 var categoryCmd = &cobra.Command{
-	Use:   "category",
+	Use:   "cat",
 	Short: "Manage note categories",
+	Long:  `Manage note categories, which are stored as subdirectories under base_dir.`,
 }
 
 var categoryAddCmd = &cobra.Command{
 	Use:   "add <name>",
 	Short: "Create a new category",
-	Args:  cobra.ExactArgs(1),
-	RunE:  runCategoryAdd,
+	Long:  `Create a new category subdirectory inside your configured base_dir.`,
+	Example: `  easy-notes cat add work
+  easy-notes cat add personal`,
+	Args: cobra.ExactArgs(1),
+	RunE: runCategoryAdd,
 }
 
 func init() {

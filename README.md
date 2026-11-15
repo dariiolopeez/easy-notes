@@ -77,19 +77,19 @@ rm "$(which easy-notes)"            # remove the binary
 
 ```sh
 # 1. Create your first note (opens in your editor)
-easy-notes new inbox "My first note"
+easy-notes n inbox "My first note"
 
 # 2. List all notes
-easy-notes list
+easy-notes ls
 
-# 3. View a note in the terminal (use the 8-char ID from list)
-easy-notes view 550e8400
+# 3. View a note in the terminal (use the 8-char ID from ls)
+easy-notes v 550e8400
 
 # 4. Edit a note
-easy-notes edit 550e8400
+easy-notes e 550e8400
 
 # 5. Check active configuration
-easy-notes config
+easy-notes cfg
 ```
 
 ---
@@ -99,7 +99,7 @@ easy-notes config
 ### Create a new note
 
 ```sh
-easy-notes new dev "Go Cobra tips" --tags go,cli,cobra
+easy-notes n dev "Go Cobra tips" --tags go,cli,cobra
 ```
 
 This creates a file at `~/.local/share/easy-notes/dev/7f3a1b2c_go-cobra-tips.md` and opens it in your editor immediately. The editor is detected automatically (see [Edit a note](#edit-a-note)).
@@ -123,14 +123,14 @@ Write your note body here in Markdown.
 
 > **Do not remove the frontmatter block.** `easy-notes` uses it to identify and index notes. You may edit all fields freely.
 
-The file name is derived from the first 8 characters of the UUID and a slug of the title: `<id8>_<slug>.md`. If you rename the `title` field from the editor, `easy-notes edit` detects the change and renames the file automatically.
+The file name is derived from the first 8 characters of the UUID and a slug of the title: `<id8>_<slug>.md`. If you rename the `title` field from the editor, `easy-notes e` detects the change and renames the file automatically.
 
 The first argument specifies the category, followed by the note title:
 
 ```sh
-easy-notes new inbox "Quick thought"
-easy-notes new work "Sprint retro"
-easy-notes new dev "Docker tips" -t docker,containers
+easy-notes n inbox "Quick thought"
+easy-notes n work "Sprint retro"
+easy-notes n dev "Docker tips" -t docker,containers
 ```
 
 ```
@@ -143,9 +143,9 @@ Flags:
 ### List notes
 
 ```sh
-easy-notes list                    # list all notes
-easy-notes list --category dev     # filter by category
-easy-notes list --tag go           # filter by tag
+easy-notes ls                    # list all notes
+easy-notes ls --category dev     # filter by category
+easy-notes ls --tag go           # filter by tag
 ```
 
 Example output:
@@ -173,8 +173,8 @@ Renders the note directly in your terminal with syntax highlighting via [glamour
 Accepts the first 8 characters of the UUID or the full ID:
 
 ```sh
-easy-notes view 7f3a1b2c
-easy-notes view 7f3a1b2c-e29b-41d4-a716-446655440000
+easy-notes v 7f3a1b2c
+easy-notes v 7f3a1b2c-e29b-41d4-a716-446655440000
 ```
 
 ---
@@ -182,7 +182,7 @@ easy-notes view 7f3a1b2c-e29b-41d4-a716-446655440000
 ### Edit a note
 
 ```sh
-easy-notes edit 7f3a1b2c
+easy-notes e 7f3a1b2c
 ```
 
 Opens the note in the configured editor. When you exit:
@@ -209,10 +209,10 @@ Editor commands with flags are fully supported — `code --wait`, `subl -w`, `nv
 Categories are plain subdirectories under the notes home. Create one explicitly:
 
 ```sh
-easy-notes category add work
+easy-notes cat add work
 ```
 
-Or pass it as the first argument when creating a note (`easy-notes new <category> <title>`) — the directory is created automatically if it does not exist.
+Or pass it as the first argument when creating a note (`easy-notes n <category> <title>`) — the directory is created automatically if it does not exist.
 
 Notes directory layout:
 
@@ -232,7 +232,7 @@ Notes directory layout:
 ### Configuration
 
 ```sh
-easy-notes config
+easy-notes cfg
 ```
 
 Shows the active configuration:
@@ -291,7 +291,7 @@ find ~/.local/share/easy-notes -name "*.md" | fzf | xargs -o $EDITOR
 ```sh
 find ~/.local/share/easy-notes -name "*.md" \
   | fzf --preview 'cat {}' \
-  | xargs -I{} easy-notes view {}
+  | xargs -I{} easy-notes v {}
 ```
 
 **Open the most recently modified note:**
@@ -365,7 +365,7 @@ ag "kubernetes" ~/.local/share/easy-notes/
 
 **What happens if I rename the title inside the editor?**
 
-`easy-notes edit` re-reads the frontmatter when you exit. If the `title` field changed, the file is renamed automatically to `<id8>_<new-slug>.md`. The UUID and all other metadata are preserved.
+`easy-notes e` re-reads the frontmatter when you exit. If the `title` field changed, the file is renamed automatically to `<id8>_<new-slug>.md`. The UUID and all other metadata are preserved.
 
 **Can I version-control my notes with Git?**
 
