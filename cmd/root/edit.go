@@ -11,10 +11,14 @@ import (
 )
 
 var editCmd = &cobra.Command{
-	Use:   "edit <id>",
+	Use:   "e <id>",
 	Short: "Open an existing note in the configured editor",
-	Args:  cobra.ExactArgs(1),
-	RunE:  runEdit,
+	Long: `Open an existing note in your configured editor. When you save and exit,
+updated_at is refreshed automatically, and if the title in the frontmatter
+changed, the file is renamed to match the new slug.`,
+	Example: `  easy-notes e 7f3a1b2c`,
+	Args:    cobra.ExactArgs(1),
+	RunE:    runEdit,
 }
 
 func init() {

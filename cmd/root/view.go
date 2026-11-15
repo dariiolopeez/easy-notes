@@ -9,10 +9,14 @@ import (
 )
 
 var viewCmd = &cobra.Command{
-	Use:   "view <id>",
+	Use:   "v <id>",
 	Short: "Render a note in the terminal with syntax highlighting",
-	Args:  cobra.ExactArgs(1),
-	RunE:  runView,
+	Long: `Render a note's metadata and Markdown body directly in the terminal using
+glamour. You can pass either the 8-character short ID or the full UUID.`,
+	Example: `  easy-notes v 7f3a1b2c
+  easy-notes v 7f3a1b2c-e29b-41d4-a716-446655440000`,
+	Args: cobra.ExactArgs(1),
+	RunE: runView,
 }
 
 func init() {

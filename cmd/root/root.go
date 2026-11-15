@@ -16,7 +16,11 @@ var rootCmd = &cobra.Command{
 	Use:   "easy-notes",
 	Short: "Local note manager based on plain Markdown files",
 	Long: `easy-notes is a local note manager based on plain Markdown files
-and Unix conventions. Each note is a .md file with YAML Frontmatter.`,
+and Unix conventions. Each note is stored as a .md file with YAML frontmatter.`,
+	Example: `  easy-notes n dev "Go Cobra tips" --tags go,cli
+  easy-notes ls --category dev
+  easy-notes v 7f3a1b2c
+  easy-notes e 7f3a1b2c`,
 }
 
 func Execute() {
